@@ -35,8 +35,10 @@ namespace CursoOnline.Dominio.Test.Cursos
 				Valor = 620M
 			};
 
-			Assert.Throws<ArgumentException>(() => 
-				new Curso(nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
+			var mensagemDeErro = Assert.Throws<ArgumentException>(() => 
+				new Curso(nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).Message;
+
+			Assert.Equal(Resources.NomeDoCursoInvalido, mensagemDeErro);
 		}
 
 		[Fact]
@@ -50,8 +52,10 @@ namespace CursoOnline.Dominio.Test.Cursos
 				Valor = 620M
 			};
 
-			Assert.Throws<ArgumentException>(() =>
-				new Curso(cursoEsperado.Nome, 0, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
+			var mensagemDeErro = Assert.Throws<ArgumentException>(() =>
+				new Curso(cursoEsperado.Nome, 0, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).Message;
+
+			Assert.Equal(Resources.CargaHorariaDoCursoInvalida, mensagemDeErro);
 		}
 
 		[Fact]
@@ -65,9 +69,18 @@ namespace CursoOnline.Dominio.Test.Cursos
 				Valor = 620M
 			};
 
-			Assert.Throws<ArgumentException>(() =>
-				new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, 0));
+			var mensagemDeErro = Assert.Throws<ArgumentException>(() =>
+				new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, 0)).Message;
+
+			Assert.Equal(Resources.ValorDoCursoInvalido, mensagemDeErro);
 		}
+	}
+
+	public static class Resources
+	{
+		public static string NomeDoCursoInvalido = "Nome do curso não pode ser inválido!";
+		public static string CargaHorariaDoCursoInvalida = "Carga Horária do curso não pode ser inválida!";
+		public static string ValorDoCursoInvalido = "Valor do curso não pode ser inválido!";
 	}
 
 	public enum PublicoAlvo
@@ -83,13 +96,13 @@ namespace CursoOnline.Dominio.Test.Cursos
 		public Curso(string nome, decimal cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
 		{
 			if (string.IsNullOrEmpty(nome))
-				throw new ArgumentException();
+				throw new ArgumentException(Resources.NomeDoCursoInvalido);
 
 			if(cargaHoraria <= 0)
-				throw new ArgumentException();
+				throw new ArgumentException(Resources.CargaHorariaDoCursoInvalida);
 
 			if (valor <= 0)
-				throw new ArgumentException();
+				throw new ArgumentException(Resources.ValorDoCursoInvalido);
 
 			Nome = nome;
 			CargaHoraria = cargaHoraria;
