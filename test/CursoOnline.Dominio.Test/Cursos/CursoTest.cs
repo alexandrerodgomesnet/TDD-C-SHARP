@@ -38,6 +38,36 @@ namespace CursoOnline.Dominio.Test.Cursos
 			Assert.Throws<ArgumentException>(() => 
 				new Curso(nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
 		}
+
+		[Fact]
+		public void CargaHorariaDeveSerMaiorQueZero()
+		{
+			var cursoEsperado = new
+			{
+				Nome = "Excel Avançado",
+				CargaHoraria = 80.00M,
+				PublicoAlvo = PublicoAlvo.Estudantes,
+				Valor = 620M
+			};
+
+			Assert.Throws<ArgumentException>(() =>
+				new Curso(cursoEsperado.Nome, 0, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
+		}
+
+		[Fact]
+		public void ValorDeveSerMaiorQueZero()
+		{
+			var cursoEsperado = new
+			{
+				Nome = "Excel Avançado",
+				CargaHoraria = 80.00M,
+				PublicoAlvo = PublicoAlvo.Estudantes,
+				Valor = 620M
+			};
+
+			Assert.Throws<ArgumentException>(() =>
+				new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, 0));
+		}
 	}
 
 	public enum PublicoAlvo
@@ -53,6 +83,12 @@ namespace CursoOnline.Dominio.Test.Cursos
 		public Curso(string nome, decimal cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
 		{
 			if (string.IsNullOrEmpty(nome))
+				throw new ArgumentException();
+
+			if(cargaHoraria <= 0)
+				throw new ArgumentException();
+
+			if (valor <= 0)
 				throw new ArgumentException();
 
 			Nome = nome;
