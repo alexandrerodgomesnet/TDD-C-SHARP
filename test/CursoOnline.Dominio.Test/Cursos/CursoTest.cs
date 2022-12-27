@@ -12,7 +12,7 @@ namespace CursoOnline.Dominio.Test.Cursos
 			{
 				Nome = "Excel Avançado",
 				CargaHoraria = 80.00M,
-				PublicoAlvo = "Estudantes",
+				PublicoAlvo = PublicoAlvo.Estudantes,
 				Valor = 620M
 			};
 
@@ -22,9 +22,17 @@ namespace CursoOnline.Dominio.Test.Cursos
 		}		
 	}
 
+	public enum PublicoAlvo
+	{
+		Estudantes,
+		Universitario,
+		Empregado,
+		Empreendedor
+	}
+
 	public class Curso
 	{
-		public Curso(string nome, decimal cargaHoraria, string publicoAlvo, decimal valor)
+		public Curso(string nome, decimal cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
 		{
 			Nome = nome;
 			CargaHoraria = cargaHoraria;
@@ -34,7 +42,7 @@ namespace CursoOnline.Dominio.Test.Cursos
 
 		public string Nome { get; private set; }
 		public decimal CargaHoraria { get; private set; }
-		public string PublicoAlvo { get; private set; }
+		public PublicoAlvo PublicoAlvo { get; private set; }
 		public decimal Valor { get; private set; }
 	}
 }
