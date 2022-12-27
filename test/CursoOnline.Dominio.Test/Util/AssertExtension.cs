@@ -9,7 +9,7 @@ namespace CursoOnline.Dominio.Test.Util
 		{
 			bool temErro = exception.Message == mensagem;
 			string mensagemFormatada = $"Esperava a mensagem: '{mensagem}' mas foi encontrada a mensagem '{exception.Message}'";
-			string mensageErro = !temErro ? mensagemFormatada : "";
+			string mensageErro = !temErro ? mensagemFormatada : string.Empty;
 			Assert.True(temErro, mensageErro);
 		}
 	}
