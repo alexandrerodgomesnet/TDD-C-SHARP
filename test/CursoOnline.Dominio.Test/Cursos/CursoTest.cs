@@ -1,4 +1,7 @@
-﻿using CursoOnline.Dominio.Test.Util;
+﻿using CursoOnline.Dominio.Enums;
+using CursoOnline.Dominio.Shared;
+using CursoOnline.Dominio.Test.Util;
+using CursoOnline.Dominio.UseCases;
 using ExpectedObjects;
 using System;
 using Xunit;
@@ -72,45 +75,5 @@ namespace CursoOnline.Dominio.Test.Cursos
 				new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, 0))
 				.ComMensagem(Resources.ValorDoCursoInvalido);
 		}
-	}
-
-	public static class Resources
-	{
-		public static string NomeDoCursoInvalido = "Nome do curso não pode ser inválido!";
-		public static string CargaHorariaDoCursoInvalida = "Carga Horária do curso não pode ser inválida!";
-		public static string ValorDoCursoInvalido = "Valor do curso não pode ser inválido!";
-	}
-
-	public enum PublicoAlvo
-	{
-		Estudantes,
-		Universitario,
-		Empregado,
-		Empreendedor
-	}
-
-	public class Curso
-	{
-		public Curso(string nome, decimal cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
-		{
-			if (string.IsNullOrEmpty(nome))
-				throw new ArgumentException(Resources.NomeDoCursoInvalido);
-
-			if(cargaHoraria <= 0)
-				throw new ArgumentException(Resources.CargaHorariaDoCursoInvalida);
-
-			if (valor <= 0)
-				throw new ArgumentException(Resources.ValorDoCursoInvalido);
-
-			Nome = nome;
-			CargaHoraria = cargaHoraria;
-			PublicoAlvo = publicoAlvo;
-			Valor = valor;
-		}
-
-		public string Nome { get; private set; }
-		public decimal CargaHoraria { get; private set; }
-		public PublicoAlvo PublicoAlvo { get; private set; }
-		public decimal Valor { get; private set; }
 	}
 }
