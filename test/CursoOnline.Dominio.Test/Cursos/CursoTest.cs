@@ -22,8 +22,10 @@ namespace CursoOnline.Dominio.Test.Cursos
 			cursoEsperado.ToExpectedObject().ShouldMatch(curso);
 		}
 
-		[Fact]
-		public void NomeDoCursoNaoPodeSerVazio()
+		[Theory]
+		[InlineData("")]
+		[InlineData(null)]
+		public void NomeDoCursoNaoPodeSerInvalido(string nome)
 		{
 			var cursoEsperado = new
 			{
@@ -34,22 +36,7 @@ namespace CursoOnline.Dominio.Test.Cursos
 			};
 
 			Assert.Throws<ArgumentException>(() => 
-				new Curso(string.Empty, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
-		}
-
-		[Fact]
-		public void NomeDoCursoNaoPodeSerNulo()
-		{
-			var cursoEsperado = new
-			{
-				Nome = "Excel Avançado",
-				CargaHoraria = 80.00M,
-				PublicoAlvo = PublicoAlvo.Estudantes,
-				Valor = 620M
-			};
-
-			Assert.Throws<ArgumentException>(() =>
-				new Curso(null, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
+				new Curso(nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
 		}
 	}
 
