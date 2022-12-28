@@ -4,6 +4,7 @@ using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Test.Builders;
 using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
+using CursoOnline.Dominio.Utils;
 using ExpectedObjects;
 using System;
 using Xunit;
@@ -62,21 +63,21 @@ namespace CursoOnline.Dominio.Test.Cursos
 		[InlineData(null)]
 		public void NomeDoCursoNaoPodeSerInvalido(string nome)
 		{
-			Assert.Throws<ArgumentException>(() => CursoBuilder.Novo().ComNome(nome).Construir())
+			Assert.Throws<GenericExceptions<ArgumentException>>(() => CursoBuilder.Novo().ComNome(nome).Construir())
 				.ComMensagem(Resources.NomeDoCursoInvalido);
 		}
 
 		[Fact]
 		public void CargaHorariaDeveSerMaiorQueZero()
 		{
-			Assert.Throws<ArgumentException>(() => CursoBuilder.Novo().ComCargaHoraria(0).Construir())
+			Assert.Throws<GenericExceptions<ArgumentException>>(() => CursoBuilder.Novo().ComCargaHoraria(0).Construir())
 				.ComMensagem(Resources.CargaHorariaDoCursoInvalida);
 		}
 
 		[Fact]
 		public void ValorDeveSerMaiorQueZero()
 		{
-			Assert.Throws<ArgumentException>(() => CursoBuilder.Novo().ComValor(0).Construir())
+			Assert.Throws<GenericExceptions<ArgumentException>>(() => CursoBuilder.Novo().ComValor(0).Construir())
 				.ComMensagem(Resources.ValorDoCursoInvalido);
 		}
 	}
