@@ -7,16 +7,23 @@ namespace CursoOnline.Dominio.UseCases
 {
 	public class Curso
 	{
+        #region Propriedades...
+        public string Nome { get; private set; }
+        public string Descricao { get; private set; }
+        public decimal CargaHoraria { get; private set; }
+        public PublicoAlvo PublicoAlvo { get; private set; }
+        public decimal Valor { get; private set; }
+        #endregion
+
+        #region Construtor...
         public Curso(string nome, string descricao, decimal cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
         {
-            if (string.IsNullOrEmpty(nome))
-                throw new GenericExceptions<ArgumentException>(Resources.NomeDoCursoInvalido);
-
-            if (cargaHoraria <= 0)
-                throw new GenericExceptions<ArgumentException>(Resources.CargaHorariaDoCursoInvalida);
-
-            if (valor <= 0)
-                throw new GenericExceptions<ArgumentException>(Resources.ValorDoCursoInvalido);
+            ValidateExceptions
+                .New()
+                .When(string.IsNullOrEmpty(nome), Resources.NomeDoCursoInvalido)
+                .When(cargaHoraria <= 0, Resources.CargaHorariaDoCursoInvalida)
+                .When(valor <= 0, Resources.ValorDoCursoInvalido)
+                .DisplayExceptions();
 
             Nome = nome;
             Descricao = descricao;
@@ -24,11 +31,37 @@ namespace CursoOnline.Dominio.UseCases
             PublicoAlvo = publicoAlvo;
             Valor = valor;
         }
+        #endregion
 
-        public string Nome { get; private set; }
-		public string Descricao { get; private set; }
-		public decimal CargaHoraria { get; private set; }
-		public PublicoAlvo PublicoAlvo { get; private set; }
-		public decimal Valor { get; private set; }
-	}
+
+        public void EditarNome(string nome)
+        {
+            ValidateExceptions
+                .New()
+                .When(string.IsNullOrEmpty(nome), Resources.NomeDoCursoInvalido)
+                .DisplayExceptions();
+
+            Nome = nome;
+        }
+
+        public void EditarCargaHoraria(decimal cargaHoraria)
+        {
+            ValidateExceptions
+                .New()
+                .When(cargaHoraria <= 0, Resources.CargaHorariaDoCursoInvalida)
+                .DisplayExceptions();
+
+            CargaHoraria = cargaHoraria;
+        }
+
+        public void EditarValor(decimal valor)
+        {
+            ValidateExceptions
+                .New()
+                .When(valor <= 0, Resources.ValorDoCursoInvalido)
+                .DisplayExceptions();
+
+            Valor = valor;
+        }
+    }
 }

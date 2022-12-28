@@ -63,22 +63,84 @@ namespace CursoOnline.Dominio.Test.Cursos
 		[InlineData(null)]
 		public void NomeDoCursoNaoPodeSerInvalido(string nome)
 		{
-			Assert.Throws<GenericExceptions<ArgumentException>>(() => CursoBuilder.Novo().ComNome(nome).Construir())
+			Assert.Throws<DomainException>(() => CursoBuilder.Novo().ComNome(nome).Construir())
 				.ComMensagem(Resources.NomeDoCursoInvalido);
 		}
 
 		[Fact]
 		public void CargaHorariaDeveSerMaiorQueZero()
 		{
-			Assert.Throws<GenericExceptions<ArgumentException>>(() => CursoBuilder.Novo().ComCargaHoraria(0).Construir())
+			Assert.Throws<DomainException>(() => CursoBuilder.Novo().ComCargaHoraria(0).Construir())
 				.ComMensagem(Resources.CargaHorariaDoCursoInvalida);
 		}
 
 		[Fact]
 		public void ValorDeveSerMaiorQueZero()
 		{
-			Assert.Throws<GenericExceptions<ArgumentException>>(() => CursoBuilder.Novo().ComValor(0).Construir())
+			Assert.Throws<DomainException>(() => CursoBuilder.Novo().ComValor(0).Construir())
 				.ComMensagem(Resources.ValorDoCursoInvalido);
 		}
-	}
+
+		[Fact]
+		public void DeveAlterarNome()
+        {
+			var nomeEsperado = "Informatica";
+			var curso = CursoBuilder.Novo().ComNome(nomeEsperado).Construir();
+
+			curso.EditarNome(nomeEsperado);
+
+			Assert.Equal(nomeEsperado, curso.Nome);
+        }
+
+		[Theory]
+		[InlineData("")]
+		[InlineData(null)]
+		public void NomeDoCursoAlteradoNaoPodeSerInvalido(string nome)
+		{
+			var curso = CursoBuilder.Novo().Construir();
+
+			Assert.Throws<DomainException>(() => curso.EditarNome(nome))
+				.ComMensagem(Resources.NomeDoCursoInvalido);
+		}
+
+		[Fact]
+		public void DeveAlterarCargaHoraria()
+		{
+			var cargaHorariaEsperada = 50.00M;
+			var curso = CursoBuilder.Novo().ComCargaHoraria(cargaHorariaEsperada).Construir();
+
+			curso.EditarCargaHoraria(cargaHorariaEsperada);
+
+			Assert.Equal(cargaHorariaEsperada, curso.CargaHoraria);
+		}
+
+		[Fact]
+		public void CargaHorariaAlteradaDeveSerMaiorQueZero()
+		{
+			var curso = CursoBuilder.Novo().Construir();
+
+			Assert.Throws<DomainException>(() => curso.EditarCargaHoraria(0))
+				.ComMensagem(Resources.CargaHorariaDoCursoInvalida);
+		}
+
+		[Fact]
+		public void DeveAlterarValor()
+		{
+			var valorEsperada = 150.00M;
+			var curso = CursoBuilder.Novo().ComCargaHoraria(valorEsperada).Construir();
+
+			curso.EditarValor(valorEsperada);
+
+			Assert.Equal(valorEsperada, curso.Valor);
+		}
+
+        [Fact]
+        public void ValorAlteradoDeveSerMaiorQueZero()
+        {
+            var curso = CursoBuilder.Novo().Construir();
+
+            Assert.Throws<DomainException>(() => curso.EditarValor(0))
+                .ComMensagem(Resources.ValorDoCursoInvalido);
+        }
+    }
 }

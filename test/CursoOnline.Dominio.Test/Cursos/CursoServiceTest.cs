@@ -8,7 +8,6 @@ using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
 using Moq;
-using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Cursos
@@ -59,7 +58,7 @@ namespace CursoOnline.Dominio.Test.Cursos
         {
             _cursoDTO.PublicoAlvo = "Policiais";
 
-            Assert.Throws<GenericExceptions<ArgumentException>>(() => _service.Adicionar(_cursoDTO))
+            Assert.Throws<DomainException>(() => _service.Adicionar(_cursoDTO))
                 .ComMensagem(Resources.PublicoAlvoInvalido);
         }
 
@@ -70,7 +69,7 @@ namespace CursoOnline.Dominio.Test.Cursos
 
             _mock.Setup(r => r.ObterCursoPeloNome(_cursoDTO.Nome)).Returns(cursoExistente);
 
-            Assert.Throws<GenericExceptions<ArgumentException>>(() => _service.Adicionar(_cursoDTO))
+            Assert.Throws<DomainException>(() => _service.Adicionar(_cursoDTO))
                 .ComMensagem(Resources.NomeCursoExistente);
         }
     }

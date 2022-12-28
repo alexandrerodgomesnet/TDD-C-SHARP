@@ -20,11 +20,11 @@ namespace CursoOnline.Dominio.Services
         {
             var cursoSalvo = _repo.ObterCursoPeloNome(cursoDTO.Nome);
 
-            if (cursoSalvo != null)
-                throw new GenericExceptions<ArgumentException>(Resources.NomeCursoExistente);
-
-            if (!Enum.TryParse<PublicoAlvo>(cursoDTO.PublicoAlvo, out var publicoAlvo))
-                throw new GenericExceptions<ArgumentException>(Resources.PublicoAlvoInvalido);
+            ValidateExceptions
+                .New()
+                .When(cursoSalvo != null, Resources.NomeCursoExistente)
+                .When((!Enum.TryParse<PublicoAlvo>(cursoDTO.PublicoAlvo, out var publicoAlvo)), Resources.PublicoAlvoInvalido)
+                .DisplayExceptions();
 
             var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, publicoAlvo, cursoDTO.Valor);
 
