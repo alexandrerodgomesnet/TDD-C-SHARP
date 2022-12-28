@@ -3,6 +3,7 @@ using CursoOnline.Dominio.Contracts;
 using CursoOnline.Dominio.DTO;
 using CursoOnline.Dominio.Services;
 using CursoOnline.Dominio.Shared;
+using CursoOnline.Dominio.Test.Builders;
 using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
@@ -60,6 +61,17 @@ namespace CursoOnline.Dominio.Test.Cursos
 
             Assert.Throws<GenericExceptions<ArgumentException>>(() => _service.Adicionar(_cursoDTO))
                 .ComMensagem(Resources.PublicoAlvoInvalido);
+        }
+
+        [Fact]
+        public void NaoDeveAdicionarCursoComMesmoNomeJaSalvo()
+        {
+            var cursoExistente = CursoBuilder.Novo().ComNome(_cursoDTO.Nome).Construir();
+
+            _mock.Setup(r => r.ObterCursoPeloNome(_cursoDTO.Nome)).Returns(cursoExistente);
+
+            Assert.Throws<GenericExceptions<ArgumentException>>(() => _service.Adicionar(_cursoDTO))
+                .ComMensagem(Resources.NomeCursoExistente);
         }
     }
 }

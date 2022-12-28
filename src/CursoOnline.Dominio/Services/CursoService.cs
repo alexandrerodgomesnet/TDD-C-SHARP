@@ -18,13 +18,15 @@ namespace CursoOnline.Dominio.Services
 
         public void Adicionar(CursoDTO cursoDTO)
         {
+            var cursoSalvo = _repo.ObterCursoPeloNome(cursoDTO.Nome);
 
-            Enum.TryParse(typeof(PublicoAlvo), cursoDTO.PublicoAlvo, out var publicoAlvo);
+            if (cursoSalvo != null)
+                throw new GenericExceptions<ArgumentException>(Resources.NomeCursoExistente);
 
-            if (publicoAlvo == null)
+            if (!Enum.TryParse<PublicoAlvo>(cursoDTO.PublicoAlvo, out var publicoAlvo))
                 throw new GenericExceptions<ArgumentException>(Resources.PublicoAlvoInvalido);
 
-            var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, PublicoAlvo.Estudantes, cursoDTO.Valor);
+            var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, publicoAlvo, cursoDTO.Valor);
 
             _repo.Inserir(curso);
         }

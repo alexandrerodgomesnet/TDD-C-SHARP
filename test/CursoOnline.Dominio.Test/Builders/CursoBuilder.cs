@@ -35,14 +35,14 @@ namespace CursoOnline.Dominio.Test.Builders
 			_cargaHoraria = cargaHoraria;
 			return this;
 		}
-		
-		public CursoBuilder ComPublicoAlvo(PublicoAlvo publicoAlvo)
-		{
-			_publicoAlvo = publicoAlvo;
-			return this;
-		}
 
-		public CursoBuilder ComValor(decimal valor)
+        public CursoBuilder ComPublicoAlvo(PublicoAlvo publicoAlvo)
+        {
+            _publicoAlvo = publicoAlvo;
+            return this;
+        }
+
+        public CursoBuilder ComValor(decimal valor)
 		{
 			_valor = valor;
 			return this;
@@ -52,6 +52,5 @@ namespace CursoOnline.Dominio.Test.Builders
 		{
 			return new Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
 		}
-
 	}
 }
