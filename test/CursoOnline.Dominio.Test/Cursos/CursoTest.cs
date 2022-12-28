@@ -1,4 +1,5 @@
-﻿using CursoOnline.Dominio.Enums;
+﻿using Bogus;
+using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Test.Builders;
 using CursoOnline.Dominio.Test.Util;
@@ -21,14 +22,16 @@ namespace CursoOnline.Dominio.Test.Cursos
 
 		public CursoTest(ITestOutputHelper output)
 		{
+			var faker = new Faker();
+
 			_output = output;
 			_output.WriteLine("Construtor sendo executado");
 
-			_nome = "Excel Avançado";
-			_descricao = "Curso de Excel nível Básico.";
-			_cargaHoraria = 80.00M;
+			_nome = faker.Random.Words();
+			_descricao = faker.Lorem.Paragraphs();
+			_cargaHoraria = faker.Random.Decimal(1, 80);
 			_publicoAlvo = PublicoAlvo.Estudantes;
-			_valor = 580.00M;
+			_valor = faker.Random.Decimal(1, 500);
 		}
 
 		public void Dispose() 
