@@ -5,20 +5,43 @@ using CursoOnline.Dominio.UseCases;
 using ExpectedObjects;
 using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CursoOnline.Dominio.Test.Cursos
 {
-	public class CursoTest
+	public class CursoTest : IDisposable
 	{
+		private readonly ITestOutputHelper _output;
+		private readonly string _nome;
+		private readonly decimal _cargaHoraria;
+		private readonly PublicoAlvo _publicoAlvo;
+		private readonly decimal _valor;
+
+		public CursoTest(ITestOutputHelper output)
+		{
+			_output = output;
+			_output.WriteLine("Construtor sendo executado");
+
+			_nome = "Excel Avançado";
+			_cargaHoraria = 80.00M;
+			_publicoAlvo = PublicoAlvo.Estudantes;
+			_valor = 580.00M;
+		}
+
+		public void Dispose() 
+		{
+			_output.WriteLine("Dispose sendo executado");
+		}
+
 		[Fact]
 		public void DeveCriarCurso()
 		{
 			var cursoEsperado = new
 			{
-				Nome = "Excel Avançado",
-				CargaHoraria = 80.00M,
-				PublicoAlvo = PublicoAlvo.Estudantes,
-				Valor = 620M
+				Nome = _nome,
+				CargaHoraria = _cargaHoraria,
+				PublicoAlvo = _publicoAlvo,
+				Valor = _valor
 			};
 
 			var curso = new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor);
@@ -31,49 +54,22 @@ namespace CursoOnline.Dominio.Test.Cursos
 		[InlineData(null)]
 		public void NomeDoCursoNaoPodeSerInvalido(string nome)
 		{
-			var cursoEsperado = new
-			{
-				Nome = "Excel Avançado",
-				CargaHoraria = 80.00M,
-				PublicoAlvo = PublicoAlvo.Estudantes,
-				Valor = 620M
-			};
-
 			Assert.Throws<ArgumentException>(() => 
-				new Curso(nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor))
-				.ComMensagem(Resources.NomeDoCursoInvalido);
+				new Curso(nome, _cargaHoraria, _publicoAlvo, _valor)).ComMensagem(Resources.NomeDoCursoInvalido);
 		}
 
 		[Fact]
 		public void CargaHorariaDeveSerMaiorQueZero()
 		{
-			var cursoEsperado = new
-			{
-				Nome = "Excel Avançado",
-				CargaHoraria = 80.00M,
-				PublicoAlvo = PublicoAlvo.Estudantes,
-				Valor = 620M
-			};
-
 			Assert.Throws<ArgumentException>(() =>
-				new Curso(cursoEsperado.Nome, 0, cursoEsperado.PublicoAlvo, cursoEsperado.Valor))
-				.ComMensagem(Resources.CargaHorariaDoCursoInvalida);
+				new Curso(_nome, 0, _publicoAlvo, _valor)).ComMensagem(Resources.CargaHorariaDoCursoInvalida);
 		}
 
 		[Fact]
 		public void ValorDeveSerMaiorQueZero()
 		{
-			var cursoEsperado = new
-			{
-				Nome = "Excel Avançado",
-				CargaHoraria = 80.00M,
-				PublicoAlvo = PublicoAlvo.Estudantes,
-				Valor = 620M
-			};
-
 			Assert.Throws<ArgumentException>(() =>
-				new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, 0))
-				.ComMensagem(Resources.ValorDoCursoInvalido);
+				new Curso(_nome, _cargaHoraria, _publicoAlvo, 0)).ComMensagem(Resources.ValorDoCursoInvalido);
 		}
 	}
 }
