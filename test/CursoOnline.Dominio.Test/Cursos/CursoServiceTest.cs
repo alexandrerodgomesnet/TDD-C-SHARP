@@ -2,8 +2,12 @@
 using CursoOnline.Dominio.Contracts;
 using CursoOnline.Dominio.DTO;
 using CursoOnline.Dominio.Services;
+using CursoOnline.Dominio.Shared;
+using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
+using CursoOnline.Dominio.Utils;
 using Moq;
+using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Cursos
@@ -23,7 +27,7 @@ namespace CursoOnline.Dominio.Test.Cursos
                 Nome = faker.Random.Words(),
                 Descricao = faker.Lorem.Paragraphs(),
                 CargaHoraria = faker.Random.Decimal(1, 80),
-                PublicoAlvo = 1,
+                PublicoAlvo = "Estudantes",
                 Valor = faker.Random.Decimal(1, 500)
             };
 
@@ -35,27 +39,27 @@ namespace CursoOnline.Dominio.Test.Cursos
         [Fact]
         public void DeveAdicionarCurso() 
         {
-            var cursoDTO = new CursoDTO
-            {
-                Nome = "Curso",
-                Descricao = "Descrição",
-                CargaHoraria = 80.00M,
-                PublicoAlvo = 1,
-                Valor = 520.00M
-            };
-
-            _service.Adicionar(cursoDTO);
+            _service.Adicionar(_cursoDTO);
 
             // mock.Verify((repo) => repo.Inserir(It.IsAny<Curso>()));
             _mock.Verify((repo) => repo.Inserir(
                 It.Is<Curso>(c => 
-                    c.Nome == cursoDTO.Nome &&
-                    c.Descricao == cursoDTO.Descricao &&
-                    c.CargaHoraria == cursoDTO.CargaHoraria &&
+                    c.Nome == _cursoDTO.Nome &&
+                    c.Descricao == _cursoDTO.Descricao &&
+                    c.CargaHoraria == _cursoDTO.CargaHoraria &&
                     // c.PublicoAlvo == (PublicoAlvo)cursoDTO.PublicoAlvo &&
-                    c.Valor == cursoDTO.Valor
+                    c.Valor == _cursoDTO.Valor
                 )
             ), Times.Exactly(1));
+        }
+
+        [Fact]
+        public void NaoDeveInformarPublicoAlvoInvalido()
+        {
+            _cursoDTO.PublicoAlvo = "Policiais";
+
+            Assert.Throws<GenericExceptions<ArgumentException>>(() => _service.Adicionar(_cursoDTO))
+                .ComMensagem(Resources.PublicoAlvoInvalido);
         }
     }
 }
