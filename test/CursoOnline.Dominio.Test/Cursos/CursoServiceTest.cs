@@ -1,13 +1,37 @@
-﻿using CursoOnline.Dominio.Enums;
+﻿using Bogus;
+using CursoOnline.Dominio.Contracts;
+using CursoOnline.Dominio.DTO;
+using CursoOnline.Dominio.Services;
 using CursoOnline.Dominio.UseCases;
 using Moq;
-using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Cursos
 {
     public class CursoServiceTest
     {
+        private readonly CursoDTO _cursoDTO;
+        private readonly Mock<ICursoRepositorio> _mock;
+        private readonly CursoService _service;
+        
+        public CursoServiceTest()
+        {
+            var faker = new Faker();
+
+            _cursoDTO = new CursoDTO
+            {
+                Nome = faker.Random.Words(),
+                Descricao = faker.Lorem.Paragraphs(),
+                CargaHoraria = faker.Random.Decimal(1, 80),
+                PublicoAlvo = 1,
+                Valor = faker.Random.Decimal(1, 500)
+            };
+
+            _mock = new Mock<ICursoRepositorio>();
+
+            _service = new CursoService(_mock.Object);
+        }
+
         [Fact]
         public void DeveAdicionarCurso() 
         {
@@ -19,42 +43,19 @@ namespace CursoOnline.Dominio.Test.Cursos
                 PublicoAlvo = 1,
                 Valor = 520.00M
             };
-            var mock = new Mock<ICursoRepositorio>();
 
-            var service = new CursoService(mock.Object);
-            service.Adicionar(cursoDTO);
+            _service.Adicionar(cursoDTO);
 
-            mock.Verify((repo) => repo.Inserir(It.IsAny<Curso>()));
+            // mock.Verify((repo) => repo.Inserir(It.IsAny<Curso>()));
+            _mock.Verify((repo) => repo.Inserir(
+                It.Is<Curso>(c => 
+                    c.Nome == cursoDTO.Nome &&
+                    c.Descricao == cursoDTO.Descricao &&
+                    c.CargaHoraria == cursoDTO.CargaHoraria &&
+                    // c.PublicoAlvo == (PublicoAlvo)cursoDTO.PublicoAlvo &&
+                    c.Valor == cursoDTO.Valor
+                )
+            ), Times.Exactly(1));
         }
-    }
-
-    public interface ICursoRepositorio
-    {
-        void Inserir(Curso curso);
-    }
-
-    public class CursoService
-    {
-        private ICursoRepositorio _repo;
-        public CursoService(ICursoRepositorio repo)
-        {
-            _repo = repo;
-        }
-
-        public void Adicionar(CursoDTO cursoDTO)
-        {
-            var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, PublicoAlvo.Estudantes, cursoDTO.Valor);
-
-            _repo.Inserir(curso);
-        }
-    }
-
-    public class CursoDTO
-    {
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public decimal CargaHoraria { get; set; }
-        public int PublicoAlvo { get; set; }
-        public decimal Valor { get; set; }
     }
 }
