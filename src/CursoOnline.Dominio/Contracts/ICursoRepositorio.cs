@@ -6,5 +6,6 @@ namespace CursoOnline.Dominio.Contracts
     {
         void Inserir(Curso curso);
         Curso ObterCursoPeloNome(string nome);
+        Curso ObterPorId(int id);
     }
 }

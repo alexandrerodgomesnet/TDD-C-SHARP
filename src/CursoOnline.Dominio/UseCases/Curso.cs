@@ -33,7 +33,7 @@ namespace CursoOnline.Dominio.UseCases
         }
         #endregion
 
-
+        #region Metodos...
         public void EditarNome(string nome)
         {
             ValidateExceptions
@@ -63,5 +63,6 @@ namespace CursoOnline.Dominio.UseCases
 
             Valor = valor;
         }
+        #endregion
     }
 }

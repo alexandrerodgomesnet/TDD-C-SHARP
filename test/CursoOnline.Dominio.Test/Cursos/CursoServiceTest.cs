@@ -72,5 +72,31 @@ namespace CursoOnline.Dominio.Test.Cursos
             Assert.Throws<DomainException>(() => _service.Adicionar(_cursoDTO))
                 .ComMensagem(Resources.NomeCursoExistente);
         }
+
+        [Fact]
+        public void DeveAlterarDadosDoCurso()
+        {
+            _cursoDTO.Id = 357;
+            var curso = CursoBuilder.Novo().Construir();
+            _mock.Setup(r => r.ObterPorId(_cursoDTO.Id)).Returns(curso);
+
+            _service.Adicionar(_cursoDTO);
+
+            Assert.Equal(_cursoDTO.Nome, curso.Nome);
+            Assert.Equal(_cursoDTO.CargaHoraria, curso.CargaHoraria);
+            Assert.Equal(_cursoDTO.Valor, curso.Valor);
+        }
+
+        [Fact]
+        public void NaoDeveAdicionarNoRepositorioQuandoCursoJaExistir()
+        {
+            _cursoDTO.Id = 357;
+            var curso = CursoBuilder.Novo().Construir();
+            _mock.Setup(r => r.ObterPorId(_cursoDTO.Id)).Returns(curso);
+
+            _service.Adicionar(_cursoDTO);
+
+            _mock.Verify(r => r.Inserir(It.IsAny<Curso>()), Times.Never);
+        }
     }
 }

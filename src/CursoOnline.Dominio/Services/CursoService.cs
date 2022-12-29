@@ -28,7 +28,15 @@ namespace CursoOnline.Dominio.Services
 
             var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, publicoAlvo, cursoDTO.Valor);
 
-            _repo.Inserir(curso);
+            if (cursoDTO.Id > 0)
+            {
+                curso = _repo.ObterPorId(cursoDTO.Id);
+                curso.EditarNome(cursoDTO.Nome);
+                curso.EditarCargaHoraria(cursoDTO.CargaHoraria);
+                curso.EditarValor(cursoDTO.Valor);
+            }
+            else
+                _repo.Inserir(curso);
         }
     }
 }
