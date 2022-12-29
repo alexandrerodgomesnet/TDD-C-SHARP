@@ -8,6 +8,7 @@ namespace CursoOnline.Dominio.UseCases
 	public class Curso
 	{
         #region Propriedades...
+        public int Id { get; private set; }
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public decimal CargaHoraria { get; private set; }

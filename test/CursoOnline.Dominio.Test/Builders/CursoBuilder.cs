@@ -1,11 +1,13 @@
 ﻿using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.UseCases;
+using System;
 
 namespace CursoOnline.Dominio.Test.Builders
 {
 	public class CursoBuilder
 	{
-        #region Campos da classe...
+		#region Campos da classe...
+		private int _id = 0;
         private string _nome = "Excel Avançado";
 		private string _descricao = "Curso de Excel nível Básico.";
 		private decimal _cargaHoraria = 80.00M;
@@ -16,6 +18,12 @@ namespace CursoOnline.Dominio.Test.Builders
         public static CursoBuilder Novo()
 		{
 			return new CursoBuilder();
+		}
+
+		public CursoBuilder ComId(int id)
+		{
+			_id = id;
+			return this;
 		}
 
 		public CursoBuilder ComNome(string nome)
@@ -50,7 +58,13 @@ namespace CursoOnline.Dominio.Test.Builders
 
 		public Curso Construir()
 		{
-			return new Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
+			var curso = new Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
+			if(_id > 0)
+            {
+				var properties = curso.GetType().GetProperty("Id");
+				properties.SetValue(curso, Convert.ChangeType(_id, properties.PropertyType), null);
+            }
+			return curso;
 		}
 	}
 }
