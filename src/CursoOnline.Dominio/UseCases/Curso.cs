@@ -1,7 +1,6 @@
 ﻿using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Utils;
-using System;
 
 namespace CursoOnline.Dominio.UseCases
 {

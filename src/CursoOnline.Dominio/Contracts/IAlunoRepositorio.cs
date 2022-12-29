@@ -3,8 +3,8 @@ using CursoOnline.Dominio.UseCases;
 
 namespace CursoOnline.Dominio.Contracts
 {
-    public interface ICursoRepositorio : IRepositorioBase<Curso>
+    public interface IAlunoRepositorio : IRepositorioBase<Aluno>
     {
-        Curso ObterCursoPeloNome(string nome);
+        Aluno ObterPorCpf(string cpf);
     }
 }

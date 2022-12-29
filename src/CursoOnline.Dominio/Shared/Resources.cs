@@ -10,5 +10,6 @@
         public static string NomeAlunoInvalido = "Nome inválido.";
         public static string EmailInvalido = "Email inválido.";
         public static string CpfInvalido = "Cpf Inválido.";
+        public static string AlunoExistenteNaBase = "Aluno já está cadastrado.";
     }
 }
