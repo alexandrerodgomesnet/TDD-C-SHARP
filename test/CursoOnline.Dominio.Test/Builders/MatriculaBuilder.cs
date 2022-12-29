@@ -12,11 +12,14 @@ namespace CursoOnline.Dominio.Test.Builders
 
         public static MatriculaBuilder Novo()
 		{
-			return new MatriculaBuilder 
+			var curso = CursoBuilder.Novo().Construir();
+			var aluno = AlunoBuilder.Novo().Construir();
+
+			return new MatriculaBuilder
 			{
-				_curso = CursoBuilder.Novo().Construir(),
-				_aluno = AlunoBuilder.Novo().Construir(),
-				_valor = 1000M
+				_curso = curso,			
+				_aluno = aluno,
+				_valor = curso.Valor
 			};
 		}
 

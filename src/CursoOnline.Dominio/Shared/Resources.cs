@@ -15,5 +15,8 @@
         public static string CursoInvalido = "Curso inválido.";
         public static string ValorMatriculaInvalido = "Valor da Matrícula inválido.";
         public static string ValorDaMatriculaMaiorQueValorDoCUrso = "Valor pago na matricula não pode ser maior que o valor do curso.";
+        public static string PublicoAlvoDiferentes = "Publico Alvo de Aluno e Curso são diferentes.";
+        public static string CursoNaoEncontrado = "Curso não encontrado.";
+        public static string AlunoNaoEncontrado = "Aluno não encontrado.";
     }
 }

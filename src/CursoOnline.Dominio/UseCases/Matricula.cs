@@ -12,12 +12,19 @@ namespace CursoOnline.Dominio.UseCases
 
         public Matricula(Curso curso, Aluno aluno, decimal valor)
         {
+            bool cursoInvalido = curso == null;
+            bool alunoInvalido = aluno == null;
+            bool valorInvalido = valor <= 0;
+            bool valorDaMatriculaMaior = !cursoInvalido && valor > curso.Valor;
+            bool publicoAlvoDiferente = !cursoInvalido && !alunoInvalido && aluno.PublicoAlvo != curso.PublicoAlvo;
+
             ValidateExceptions
                 .New()                
-                .When(curso == null, Resources.CursoInvalido)
-                .When(aluno == null, Resources.AlunoInvalido)
-                .When(valor <= 0, Resources.ValorMatriculaInvalido)
-                .When(curso != null && valor > curso.Valor, Resources.ValorDaMatriculaMaiorQueValorDoCUrso)
+                .When(cursoInvalido, Resources.CursoInvalido)
+                .When(alunoInvalido, Resources.AlunoInvalido)
+                .When(valorInvalido, Resources.ValorMatriculaInvalido)
+                .When(valorDaMatriculaMaior, Resources.ValorDaMatriculaMaiorQueValorDoCUrso)
+                .When(publicoAlvoDiferente, Resources.PublicoAlvoDiferentes)
                 .DisplayExceptions();
             
             Curso = curso;

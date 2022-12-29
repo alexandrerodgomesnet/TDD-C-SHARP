@@ -11,7 +11,7 @@ namespace CursoOnline.Dominio.Test.Builders
         private string _nome = "José";
 		private string _email = "jose@email.com";
 		private string _cpf = "123.456.789-00";
-		private PublicoAlvo _publicoAlvo = PublicoAlvo.Empreendedor;
+		private PublicoAlvo _publicoAlvo = PublicoAlvo.Estudantes;
         #endregion
 
         public static AlunoBuilder Novo()
