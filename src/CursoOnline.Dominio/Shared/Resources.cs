@@ -11,5 +11,9 @@
         public static string EmailInvalido = "Email inválido.";
         public static string CpfInvalido = "Cpf Inválido.";
         public static string AlunoExistenteNaBase = "Aluno já está cadastrado.";
+        public static string AlunoInvalido = "Aluno inválido.";
+        public static string CursoInvalido = "Curso inválido.";
+        public static string ValorMatriculaInvalido = "Valor da Matrícula inválido.";
+        public static string ValorDaMatriculaMaiorQueValorDoCUrso = "Valor pago na matricula não pode ser maior que o valor do curso.";
     }
 }
