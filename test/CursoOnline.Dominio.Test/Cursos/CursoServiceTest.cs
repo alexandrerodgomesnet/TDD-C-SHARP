@@ -41,25 +41,14 @@ namespace CursoOnline.Dominio.Test.Cursos
         {
             _service.Adicionar(_cursoDTO);
 
-            // mock.Verify((repo) => repo.Inserir(It.IsAny<Curso>()));
             _mock.Verify((repo) => repo.Inserir(
                 It.Is<Curso>(c => 
                     c.Nome == _cursoDTO.Nome &&
                     c.Descricao == _cursoDTO.Descricao &&
                     c.CargaHoraria == _cursoDTO.CargaHoraria &&
-                    // c.PublicoAlvo == (PublicoAlvo)cursoDTO.PublicoAlvo &&
                     c.Valor == _cursoDTO.Valor
                 )
             ), Times.Exactly(1));
-        }
-
-        [Fact]
-        public void NaoDeveInformarPublicoAlvoInvalido()
-        {
-            _cursoDTO.PublicoAlvo = "Policiais";
-
-            Assert.Throws<DomainException>(() => _service.Adicionar(_cursoDTO))
-                .ComMensagem(Resources.PublicoAlvoInvalido);
         }
 
         [Fact]

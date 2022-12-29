@@ -1,10 +1,8 @@
 ﻿using CursoOnline.Dominio.Contracts;
 using CursoOnline.Dominio.DTO;
-using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
-using System;
 
 namespace CursoOnline.Dominio.Services
 {
@@ -24,11 +22,11 @@ namespace CursoOnline.Dominio.Services
             ValidateExceptions
                 .New()
                 .When(alunoCadastrado != null, Resources.AlunoExistenteNaBase)
-                .When(!Enum.TryParse<PublicoAlvo>(alunoDTO.PublicoAlvo, out var publicoAlvo), Resources.PublicoAlvoInvalido)
                 .DisplayExceptions();
 
-            if(alunoDTO.Id == 0)
+            if (alunoDTO.Id == 0)
             {
+                var publicoAlvo = alunoDTO.PublicoAlvo.ConverterPublicoAlvo();
                 var aluno = new Aluno(alunoDTO.Nome, alunoDTO.Email, alunoDTO.Cpf, publicoAlvo);
                 _repo.Inserir(aluno);
             }

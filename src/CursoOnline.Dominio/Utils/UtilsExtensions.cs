@@ -1,4 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using CursoOnline.Dominio.Enums;
+using CursoOnline.Dominio.Shared;
+using System;
+using System.Text.RegularExpressions;
 
 namespace CursoOnline.Dominio.Utils
 {
@@ -14,6 +17,16 @@ namespace CursoOnline.Dominio.Utils
         {
              Regex cpfRegex = new Regex(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
             return cpfRegex.Match(cpf).Success;
+        }
+
+        public static PublicoAlvo ConverterPublicoAlvo(this string publicoAlvo)
+        {
+            ValidateExceptions
+                .New()
+                .When(!Enum.TryParse<PublicoAlvo>(publicoAlvo, out var publicoAlvoConvertido), Resources.PublicoAlvoInvalido)
+                .DisplayExceptions();
+
+            return publicoAlvoConvertido;
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using CursoOnline.Dominio.Contracts;
 using CursoOnline.Dominio.DTO;
-using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
-using System;
 
 namespace CursoOnline.Dominio.Services
 {
@@ -23,8 +21,9 @@ namespace CursoOnline.Dominio.Services
             ValidateExceptions
                 .New()
                 .When(cursoSalvo != null && cursoSalvo.Id != cursoDTO.Id, Resources.NomeCursoExistente)
-                .When(!Enum.TryParse<PublicoAlvo>(cursoDTO.PublicoAlvo, out var publicoAlvo), Resources.PublicoAlvoInvalido)
                 .DisplayExceptions();
+
+            var publicoAlvo = cursoDTO.PublicoAlvo.ConverterPublicoAlvo();
 
             var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, publicoAlvo, cursoDTO.Valor);
 

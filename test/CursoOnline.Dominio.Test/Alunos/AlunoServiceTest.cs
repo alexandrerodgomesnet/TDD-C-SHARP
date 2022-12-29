@@ -55,16 +55,6 @@ namespace CursoOnline.Dominio.Test.Alunos
         }
 
         [Fact]
-        public void NaoDeveAdicionarAlunoQuandoPublicoAlvoInvalido()
-        {
-            var publicoAlvoInvalido = "publicoAlvoInvalido";
-            _alunoDTO.PublicoAlvo = publicoAlvoInvalido;
-
-            Assert.Throws<DomainException>(() => _alunoService.Adicionar(_alunoDTO))
-                .ComMensagem(Resources.PublicoAlvoInvalido);
-        }
-
-        [Fact]
         public void DeveEditarNomeAluno()
         {
             _alunoDTO.Id = 10;
