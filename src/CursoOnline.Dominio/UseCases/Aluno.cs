@@ -1,12 +1,12 @@
-﻿using CursoOnline.Dominio.Enums;
+﻿using CursoOnline.Dominio.Entities;
+using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Utils;
 
 namespace CursoOnline.Dominio.UseCases
 {
-    public class Aluno
+    public class Aluno : EntityBase
     {        
-        public int Id { get; private set; }
         public string Nome { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }

@@ -3,6 +3,7 @@ using CursoOnline.Dominio.DTO;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
+using System;
 
 namespace CursoOnline.Dominio.Services
 {
@@ -24,11 +25,11 @@ namespace CursoOnline.Dominio.Services
                 .When(alunoCadastrado != null, Resources.AlunoExistenteNaBase)
                 .DisplayExceptions();
 
-            if (alunoDTO.Id == 0)
+            if (alunoDTO.Id == Guid.Empty)
             {
                 var publicoAlvo = alunoDTO.PublicoAlvo.ConverterPublicoAlvo();
                 var aluno = new Aluno(alunoDTO.Nome, alunoDTO.Email, alunoDTO.Cpf, publicoAlvo);
-                _repo.Inserir(aluno);
+                _repo.Adicionar(aluno);
             }
             else
             {

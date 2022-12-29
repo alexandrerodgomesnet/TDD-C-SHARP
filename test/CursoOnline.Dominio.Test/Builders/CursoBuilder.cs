@@ -7,7 +7,7 @@ namespace CursoOnline.Dominio.Test.Builders
 	public class CursoBuilder
 	{
 		#region Campos da classe...
-		private int _id = 0;
+		private Guid _id = Guid.NewGuid();
         private string _nome = "Excel Avançado";
 		private string _descricao = "Curso de Excel nível Básico.";
 		private decimal _cargaHoraria = 80.00M;
@@ -20,7 +20,7 @@ namespace CursoOnline.Dominio.Test.Builders
 			return new CursoBuilder();
 		}
 
-		public CursoBuilder ComId(int id)
+		public CursoBuilder ComId(Guid id)
 		{
 			_id = id;
 			return this;
@@ -59,7 +59,7 @@ namespace CursoOnline.Dominio.Test.Builders
 		public Curso Construir()
 		{
 			var curso = new Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
-			if(_id > 0)
+			if(_id == Guid.Empty)
             {
 				var properties = curso.GetType().GetProperty("Id");
 				properties.SetValue(curso, Convert.ChangeType(_id, properties.PropertyType), null);

@@ -7,7 +7,7 @@ namespace CursoOnline.Dominio.Test.Builders
 	public class AlunoBuilder
 	{
 		#region Campos da classe...
-		private int _id = 0;
+		private Guid _id = Guid.NewGuid();
         private string _nome = "José";
 		private string _email = "jose@email.com";
 		private string _cpf = "123.456.789-00";
@@ -19,7 +19,7 @@ namespace CursoOnline.Dominio.Test.Builders
 			return new AlunoBuilder();
 		}
 
-		public AlunoBuilder ComId(int id)
+		public AlunoBuilder ComId(Guid id)
 		{
 			_id = id;
 			return this;
@@ -53,7 +53,7 @@ namespace CursoOnline.Dominio.Test.Builders
 		{
 			var aluno = new Aluno(_nome, _email, _cpf, _publicoAlvo);
 
-			if (_id > 0)
+			if (_id == Guid.Empty)
 			{
 				var properties = aluno.GetType().GetProperty("Id");
 				properties.SetValue(aluno, Convert.ChangeType(_id, properties.PropertyType), null);

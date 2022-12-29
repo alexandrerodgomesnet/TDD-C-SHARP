@@ -10,6 +10,7 @@ using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
 using Moq;
+using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Alunos
@@ -41,13 +42,13 @@ namespace CursoOnline.Dominio.Test.Alunos
         {
             _alunoService.Adicionar(_alunoDTO);
 
-            _mock.Verify(r => r.Inserir(It.Is<Aluno>(a => a.Nome == _alunoDTO.Nome)));
+            _mock.Verify(r => r.Adicionar(It.Is<Aluno>(a => a.Nome == _alunoDTO.Nome)));
         }
 
         [Fact]
         public void NaoDeveAdicionarAlunoQuandoCpfJaCadastrado()
         {
-            var alunoCadastrado = AlunoBuilder.Novo().ComId(1).Construir();
+            var alunoCadastrado = AlunoBuilder.Novo().ComId(Guid.NewGuid()).Construir();
             _mock.Setup(r => r.ObterPorCpf(_alunoDTO.Cpf)).Returns(alunoCadastrado);
 
             Assert.Throws<DomainException>(() => _alunoService.Adicionar(_alunoDTO))
@@ -57,7 +58,7 @@ namespace CursoOnline.Dominio.Test.Alunos
         [Fact]
         public void DeveEditarNomeAluno()
         {
-            _alunoDTO.Id = 10;
+            _alunoDTO.Id = Guid.NewGuid();
             _alunoDTO.Nome = _faker.Person.FullName;
             var alunoExistente = AlunoBuilder.Novo().Construir();
             _mock.Setup(r => r.ObterPorId(_alunoDTO.Id)).Returns(alunoExistente);
@@ -85,13 +86,13 @@ namespace CursoOnline.Dominio.Test.Alunos
         [Fact]
         public void NaoDeveAdicionarQuandoForEdicao()
         {
-            _alunoDTO.Id = 10;
+            _alunoDTO.Id = Guid.NewGuid();
             var alunoExistente = AlunoBuilder.Novo().Construir();
             _mock.Setup(r => r.ObterPorId(_alunoDTO.Id)).Returns(alunoExistente);
 
             _alunoService.Adicionar(_alunoDTO);
 
-            _mock.Verify(r => r.Inserir(It.IsAny<Aluno>()), Times.Never);
+            _mock.Verify(r => r.Adicionar(It.IsAny<Aluno>()), Times.Never);
         }
     }
 }

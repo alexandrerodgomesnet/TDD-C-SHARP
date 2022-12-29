@@ -8,6 +8,7 @@ using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
 using Moq;
+using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Cursos
@@ -24,6 +25,7 @@ namespace CursoOnline.Dominio.Test.Cursos
 
             _cursoDTO = new CursoDTO
             {
+                Id = Guid.NewGuid(),
                 Nome = faker.Random.Words(),
                 Descricao = faker.Lorem.Paragraphs(),
                 CargaHoraria = faker.Random.Decimal(1, 80),
@@ -39,9 +41,10 @@ namespace CursoOnline.Dominio.Test.Cursos
         [Fact]
         public void DeveAdicionarCurso() 
         {
+            _cursoDTO.Id = Guid.Empty;
             _service.Adicionar(_cursoDTO);
 
-            _mock.Verify((repo) => repo.Inserir(
+            _mock.Verify((repo) => repo.Adicionar(
                 It.Is<Curso>(c => 
                     c.Nome == _cursoDTO.Nome &&
                     c.Descricao == _cursoDTO.Descricao &&
@@ -54,7 +57,7 @@ namespace CursoOnline.Dominio.Test.Cursos
         [Fact]
         public void NaoDeveAdicionarCursoComMesmoNomeJaSalvo()
         {
-            var cursoExistente = CursoBuilder.Novo().ComId(111).ComNome(_cursoDTO.Nome).Construir();
+            var cursoExistente = CursoBuilder.Novo().ComId(Guid.NewGuid()).ComNome(_cursoDTO.Nome).Construir();
 
             _mock.Setup(r => r.ObterCursoPeloNome(_cursoDTO.Nome)).Returns(cursoExistente);
 
@@ -65,7 +68,7 @@ namespace CursoOnline.Dominio.Test.Cursos
         [Fact]
         public void DeveAlterarDadosDoCurso()
         {
-            _cursoDTO.Id = 357;
+            _cursoDTO.Id = Guid.NewGuid();
             var curso = CursoBuilder.Novo().Construir();
             _mock.Setup(r => r.ObterPorId(_cursoDTO.Id)).Returns(curso);
 
@@ -79,13 +82,13 @@ namespace CursoOnline.Dominio.Test.Cursos
         [Fact]
         public void NaoDeveAdicionarNoRepositorioQuandoCursoJaExistir()
         {
-            _cursoDTO.Id = 357;
+            _cursoDTO.Id = Guid.NewGuid();
             var curso = CursoBuilder.Novo().Construir();
             _mock.Setup(r => r.ObterPorId(_cursoDTO.Id)).Returns(curso);
 
             _service.Adicionar(_cursoDTO);
 
-            _mock.Verify(r => r.Inserir(It.IsAny<Curso>()), Times.Never);
+            _mock.Verify(r => r.Adicionar(It.IsAny<Curso>()), Times.Never);
         }
     }
 }

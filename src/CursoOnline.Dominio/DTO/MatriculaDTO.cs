@@ -1,9 +1,11 @@
-﻿namespace CursoOnline.Dominio.DTO
+﻿using System;
+
+namespace CursoOnline.Dominio.DTO
 {
     public class MatriculaDTO
     {
-        public int AlunoId { get; set; }
-        public int CursoId { get; set; }
+        public Guid AlunoId { get; set; }
+        public Guid CursoId { get; set; }
         public decimal Valor { get; set; }
     }
 }

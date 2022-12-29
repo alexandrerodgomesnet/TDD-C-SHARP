@@ -7,6 +7,7 @@ using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
 using Moq;
+using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Matriculas
@@ -27,11 +28,11 @@ namespace CursoOnline.Dominio.Test.Matriculas
             _mockCurso = new Mock<ICursoRepositorio>();
             _mockAluno = new Mock<IAlunoRepositorio>();
 
-            _aluno = AlunoBuilder.Novo().ComId(1).Construir();
+            _aluno = AlunoBuilder.Novo().ComId(Guid.NewGuid()).Construir();
             _mockAluno.Setup(r => r.ObterPorId(_aluno.Id)).Returns(_aluno);
 
-            _curso = CursoBuilder.Novo().ComId(1).Construir();
-            _mockCurso.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(_curso);
+            _curso = CursoBuilder.Novo().ComId(Guid.NewGuid()).Construir();
+            _mockCurso.Setup(r => r.ObterPorId(It.IsAny<Guid>())).Returns(_curso);
 
             _matriculaDTO = new MatriculaDTO { AlunoId = _aluno.Id, CursoId = _curso.Id, Valor = _curso.Valor };
 
@@ -42,7 +43,7 @@ namespace CursoOnline.Dominio.Test.Matriculas
         public void DeveCursoSerValido()
         {
             Curso cursoInvalido = null;
-            _mockCurso.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(cursoInvalido);
+            _mockCurso.Setup(r => r.ObterPorId(It.IsAny<Guid>())).Returns(cursoInvalido);
 
             Assert.Throws<DomainException>(() => _service.Criar(_matriculaDTO))
                 .ComMensagem(Resources.CursoNaoEncontrado);
@@ -53,7 +54,7 @@ namespace CursoOnline.Dominio.Test.Matriculas
         public void DeveAlunoSerValido()
         {
             Aluno alunoInvalido = null;
-            _mockAluno.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(alunoInvalido);
+            _mockAluno.Setup(r => r.ObterPorId(It.IsAny<Guid>())).Returns(alunoInvalido);
 
             Assert.Throws<DomainException>(() => _service.Criar(_matriculaDTO))
                 .ComMensagem(Resources.AlunoNaoEncontrado);
@@ -64,7 +65,7 @@ namespace CursoOnline.Dominio.Test.Matriculas
         {
             _service.Criar(_matriculaDTO);
 
-            _mockMatricula.Verify(r => r.Inserir(It.Is<Matricula>(x => x.Aluno == _aluno && x.Curso == _curso)));
+            _mockMatricula.Verify(r => r.Adicionar(It.Is<Matricula>(x => x.Aluno == _aluno && x.Curso == _curso)));
         }
     }
 }

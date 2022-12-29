@@ -32,7 +32,7 @@ namespace CursoOnline.Dominio.Services
 
             var matricula = new Matricula(curso, aluno, matriculaDTO.Valor);
 
-            _matriculaRepo.Inserir(matricula);
+            _matriculaRepo.Adicionar(matricula);
         }
     }
 }

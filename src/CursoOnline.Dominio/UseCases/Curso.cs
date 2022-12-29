@@ -1,13 +1,13 @@
-﻿using CursoOnline.Dominio.Enums;
+﻿using CursoOnline.Dominio.Entities;
+using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Utils;
 
 namespace CursoOnline.Dominio.UseCases
 {
-	public class Curso
-	{
+	public class Curso : EntityBase
+    {
         #region Propriedades...
-        public int Id { get; private set; }
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public decimal CargaHoraria { get; private set; }

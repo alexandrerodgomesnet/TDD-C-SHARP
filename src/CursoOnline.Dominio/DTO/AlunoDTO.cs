@@ -1,10 +1,10 @@
-﻿using CursoOnline.Dominio.Enums;
+﻿using System;
 
 namespace CursoOnline.Dominio.DTO
 {
     public class AlunoDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Cpf { get; set; }

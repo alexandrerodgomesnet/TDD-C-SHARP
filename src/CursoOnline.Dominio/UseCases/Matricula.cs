@@ -1,9 +1,10 @@
-﻿using CursoOnline.Dominio.Shared;
+﻿using CursoOnline.Dominio.Entities;
+using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Utils;
 
 namespace CursoOnline.Dominio.UseCases
 {
-    public class Matricula
+    public class Matricula : EntityBase
     {
         public Aluno Aluno { get; private set; }
         public Curso Curso { get; private set; }

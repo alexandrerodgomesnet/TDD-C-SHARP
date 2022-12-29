@@ -3,6 +3,7 @@ using CursoOnline.Dominio.DTO;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
+using System;
 
 namespace CursoOnline.Dominio.Services
 {
@@ -27,7 +28,7 @@ namespace CursoOnline.Dominio.Services
 
             var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, publicoAlvo, cursoDTO.Valor);
 
-            if (cursoDTO.Id > 0)
+            if (cursoDTO.Id != Guid.Empty)
             {
                 curso = _repo.ObterPorId(cursoDTO.Id);
                 curso.EditarNome(cursoDTO.Nome);
@@ -35,7 +36,7 @@ namespace CursoOnline.Dominio.Services
                 curso.EditarValor(cursoDTO.Valor);
             }
             else
-                _repo.Inserir(curso);
+                _repo.Adicionar(curso);
         }
     }
 }
