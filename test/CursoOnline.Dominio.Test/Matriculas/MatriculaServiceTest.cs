@@ -1,6 +1,5 @@
 ﻿using CursoOnline.Dominio.Contracts;
 using CursoOnline.Dominio.DTO;
-using CursoOnline.Dominio.Enums;
 using CursoOnline.Dominio.Services;
 using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Test.Builders;
@@ -8,7 +7,6 @@ using CursoOnline.Dominio.Test.Util;
 using CursoOnline.Dominio.UseCases;
 using CursoOnline.Dominio.Utils;
 using Moq;
-using System;
 using Xunit;
 
 namespace CursoOnline.Dominio.Test.Matriculas
@@ -64,15 +62,9 @@ namespace CursoOnline.Dominio.Test.Matriculas
         [Fact]
         public void DeveAdicionarMatricula()
         {
-
             _service.Criar(_matriculaDTO);
 
             _mockMatricula.Verify(r => r.Inserir(It.Is<Matricula>(x => x.Aluno == _aluno && x.Curso == _curso)));
-            //Aluno alunoInvalido = null;
-            //_mockAluno.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(alunoInvalido);
-
-            //Assert.Throws<DomainException>(() => _service.Criar(_matriculaDTO))
-            //    .ComMensagem(Resources.AlunoNaoEncontrado);
         }
     }
 }
