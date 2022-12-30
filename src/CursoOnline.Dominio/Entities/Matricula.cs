@@ -1,5 +1,7 @@
 ﻿using CursoOnline.Dominio.Shared;
 using CursoOnline.Dominio.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace CursoOnline.Dominio.Entities
 {
@@ -9,6 +11,8 @@ namespace CursoOnline.Dominio.Entities
         public Curso Curso { get; private set; }
         public decimal Valor { get; private set; }
         public bool TemDesconto { get; private set; }
+        public double NotaAluno { get; private set; }
+        public bool CursoConcluido { get; private set; }
 
         public Matricula(Curso curso, Aluno aluno, decimal valor)
         {
@@ -31,6 +35,18 @@ namespace CursoOnline.Dominio.Entities
             Aluno = aluno;
             Valor = valor;
             TemDesconto = valor < curso.Valor;
+        }
+
+        public void InformarNota(double notaAluno)
+        {
+            bool notaInvalida = notaAluno < 0 || notaAluno > 10;
+            ValidateExceptions
+                .New()
+                .When(notaInvalida, Resources.NotaAlunoInvalida)
+                .DisplayExceptions();
+
+            NotaAluno = notaAluno;
+            CursoConcluido = true;
         }
     }
 }

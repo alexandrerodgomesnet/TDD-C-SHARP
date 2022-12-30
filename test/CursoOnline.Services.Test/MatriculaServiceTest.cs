@@ -35,7 +35,7 @@ namespace CursoOnline.Services.Test
 
             _matriculaDTO = new MatriculaDTO { AlunoId = _aluno.Id, CursoId = _curso.Id, Valor = _curso.Valor };
 
-            _service = new MatriculaService(_mockCurso.Object, _mockAluno.Object, _mockMatricula.Object) ;
+            _service = new MatriculaService(_mockCurso.Object, _mockAluno.Object, _mockMatricula.Object);
         }
 
         [Fact]
@@ -65,6 +65,32 @@ namespace CursoOnline.Services.Test
             _service.Criar(_matriculaDTO);
 
             _mockMatricula.Verify(r => r.Adicionar(It.Is<Matricula>(x => x.Aluno == _aluno && x.Curso == _curso)));
+        }
+
+        [Fact]
+        public void DeveInformarNotaDoAluno()
+        {
+            var notaEsperada = 8.9;
+            var matricula = MatriculaBuilder.Novo().Construir();
+
+            _mockMatricula.Setup(r => r.ObterPorId(matricula.Id)).Returns(matricula);
+
+            _service.Concluir(matricula.Id, notaEsperada);
+
+            Assert.Equal(notaEsperada, matricula.NotaAluno);
+        }
+
+        [Fact]
+        public void DeveNotificarQuandoMatriculaNaoEncontrada()
+        {
+            var idMatriculaINvalido = Guid.Empty;
+            Matricula matriculaInvalida = null;
+            var nota = 8.9;
+
+            _mockMatricula.Setup(r => r.ObterPorId(It.IsAny<Guid>())).Returns(matriculaInvalida);
+
+            Assert.Throws<DomainException>(() => _service.Concluir(idMatriculaINvalido, nota))
+                .ComMensagem(Resources.MatriculaInvalida);
         }
     }
 }

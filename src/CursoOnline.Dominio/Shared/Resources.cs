@@ -18,5 +18,7 @@
         public static string PublicoAlvoDiferentes = "Publico Alvo de Aluno e Curso são diferentes.";
         public static string CursoNaoEncontrado = "Curso não encontrado.";
         public static string AlunoNaoEncontrado = "Aluno não encontrado.";
+        public static string NotaAlunoInvalida = "Nota do Aluno Inválida.";
+        public static string MatriculaInvalida = "Matricula inválida.";
     }
 }
