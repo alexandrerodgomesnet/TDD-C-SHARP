@@ -13,14 +13,17 @@ namespace CursoOnline.Services.Test
 {
     public class MatriculaServiceTest
     {
-        Mock<IMatriculaRepositorio> _mockMatricula;
-        Mock<ICursoRepositorio> _mockCurso;
-        Mock<IAlunoRepositorio> _mockAluno;
-        MatriculaDTO _matriculaDTO;
-        MatriculaService _service;
+        #region Campos privados...
+        private readonly Mock<IMatriculaRepositorio> _mockMatricula;
+        private readonly Mock<ICursoRepositorio> _mockCurso;
+        private readonly Mock<IAlunoRepositorio> _mockAluno;
+        private readonly MatriculaDTO _matriculaDTO;
+        private readonly MatriculaService _service;
         private readonly Curso _curso;
         private readonly Aluno _aluno;
+        #endregion
 
+        #region Construtor...
         public MatriculaServiceTest()
         {
             _mockMatricula = new Mock<IMatriculaRepositorio>();
@@ -37,7 +40,9 @@ namespace CursoOnline.Services.Test
 
             _service = new MatriculaService(_mockCurso.Object, _mockAluno.Object, _mockMatricula.Object);
         }
+        #endregion        
 
+        #region Metodos...
         [Fact]
         public void DeveCursoSerValido()
         {
@@ -47,7 +52,6 @@ namespace CursoOnline.Services.Test
             Assert.Throws<DomainException>(() => _service.Criar(_matriculaDTO))
                 .ComMensagem(Resources.CursoNaoEncontrado);
         }
-
 
         [Fact]
         public void DeveAlunoSerValido()
@@ -92,5 +96,30 @@ namespace CursoOnline.Services.Test
             Assert.Throws<DomainException>(() => _service.Concluir(idMatriculaINvalido, nota))
                 .ComMensagem(Resources.MatriculaInvalida);
         }
+
+        [Fact]
+        public void DeveCancelarMatricula()
+        {
+            var matricula = MatriculaBuilder.Novo().Construir();
+            _mockMatricula.Setup(r => r.ObterPorId(matricula.Id)).Returns(matricula);
+
+            _service.Cancelar(matricula.Id);
+
+            Assert.True(matricula.Cancelada);
+        }
+
+        [Fact]
+        public void DeveNotificarQuandoMatriculaNaoEncontradaAoCancelar()
+        {
+            var idMatriculaINvalido = Guid.Empty;
+            Matricula matriculaInvalida = null;
+
+            _mockMatricula.Setup(r => r.ObterPorId(It.IsAny<Guid>())).Returns(matriculaInvalida);
+
+            Assert.Throws<DomainException>(() => _service.Cancelar(idMatriculaINvalido))
+                .ComMensagem(Resources.MatriculaInvalida);
+        }
+
+        #endregion
     }
 }

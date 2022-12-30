@@ -124,5 +124,37 @@ namespace CursoOnline.Dominio.Test
             matricula.InformarNota(notaEsperada);
             Assert.True(matricula.CursoConcluido);
         }
+
+
+        [Fact]
+        public void DeveCancelarMatricula()
+        {            
+            var matricula = MatriculaBuilder.Novo().Construir();
+            
+            matricula.Cancelar();
+
+            Assert.True(matricula.Cancelada);
+        }
+
+        [Fact]
+        public void NaoDeveInformarNotaQuandoMatriculaEstiverCancelada()
+        {
+            const double nota = 8.9;
+            var matricula = MatriculaBuilder.Novo().ComCancelada(true).Construir();
+            
+            Assert.Throws<DomainException>(() =>
+                matricula.InformarNota(nota)
+            ).ComMensagem(Resources.MatriculaCancelada);
+        }
+
+        [Fact]
+        public void NaoDeveInformarNotaQuandoMatriculaEstiverConcluido()
+        {
+            var matricula = MatriculaBuilder.Novo().ComConcluido(true).Construir();
+
+            Assert.Throws<DomainException>(() =>
+                matricula.Cancelar()
+            ).ComMensagem(Resources.MatriculaConcluida);
+        }
     }    
 }

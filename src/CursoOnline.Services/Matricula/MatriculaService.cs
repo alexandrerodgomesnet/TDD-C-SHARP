@@ -9,17 +9,22 @@ namespace CursoOnline.Services
 {
     public class MatriculaService
     {
+        #region Campos privados da classe...
         private readonly ICursoRepositorio _cursoRepo;
         private readonly IAlunoRepositorio _alunoRepo;
         private readonly IMatriculaRepositorio _matriculaRepo;
+        #endregion
 
+        #region Construtor...
         public MatriculaService(ICursoRepositorio cursoRepo, IAlunoRepositorio alunoRepo, IMatriculaRepositorio matriculaRepo)
         {
             _cursoRepo = cursoRepo;
             _alunoRepo = alunoRepo;
             _matriculaRepo = matriculaRepo;
         }
+        #endregion
 
+        #region Metodos...
         public void Criar(MatriculaDTO matriculaDTO)
         {
             var curso = _cursoRepo.ObterPorId(matriculaDTO.CursoId);
@@ -46,5 +51,17 @@ namespace CursoOnline.Services
             var matricula = _matriculaRepo.ObterPorId(matriculaId);
             matricula.InformarNota(nota);
         }
+
+        public void Cancelar(Guid matriculaId)
+        {
+            ValidateExceptions
+                .New()
+                .When(matriculaId == Guid.Empty, Resources.MatriculaInvalida)
+                .DisplayExceptions();
+
+            var matricula = _matriculaRepo.ObterPorId(matriculaId);
+            matricula.Cancelar();
+        }
+        #endregion
     }
 }

@@ -20,5 +20,7 @@
         public static string AlunoNaoEncontrado = "Aluno não encontrado.";
         public static string NotaAlunoInvalida = "Nota do Aluno Inválida.";
         public static string MatriculaInvalida = "Matricula inválida.";
+        public static string MatriculaCancelada = "Não é possível emitir nota quando a matricula estiver cancelada.";
+        public static string MatriculaConcluida = "Matricula concluida.";
     }
 }

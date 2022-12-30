@@ -8,16 +8,19 @@ namespace CursoOnline.Utils.Test.Builders
         private Aluno _aluno;
 		private Curso _curso;
 		private decimal _valor;
-        #endregion
+		private bool _cancelada;
+		private bool _concluido;
+		#endregion
 
-        public static MatriculaBuilder Novo()
+		#region Metodos...
+		public static MatriculaBuilder Novo()
 		{
 			var curso = CursoBuilder.Novo().Construir();
 			var aluno = AlunoBuilder.Novo().Construir();
 
 			return new MatriculaBuilder
 			{
-				_curso = curso,			
+				_curso = curso,
 				_aluno = aluno,
 				_valor = curso.Valor
 			};
@@ -41,9 +44,33 @@ namespace CursoOnline.Utils.Test.Builders
 			return this;
 		}
 
+		public MatriculaBuilder ComCancelada(bool cancelada)
+		{
+			_cancelada = cancelada;
+			return this;
+		}
+
+		public MatriculaBuilder ComConcluido(bool concluido)
+		{
+			_concluido = concluido;
+			return this;
+		}
+
 		public Matricula Construir()
 		{
-			return new Matricula(_curso, _aluno, _valor);
+			var matricula = new Matricula(_curso, _aluno, _valor);
+
+			if (_cancelada)
+				matricula.Cancelar();
+
+			if (_concluido)
+			{
+				var nota = 7;
+				matricula.InformarNota(nota);
+			}
+
+			return matricula;
 		}
+		#endregion
 	}
 }
